@@ -1,0 +1,93 @@
+package Pinto::Remote;
+
+# ABSTRACT:  Interact with a remote Pinto repository
+
+use Moose;
+
+use LWP::UserAgent;
+
+use MooseX::Types::Moose qw(Str);
+use Pinto::Remote::Types qw(URI AuthorID);
+
+use Pinto::Remote::Response;
+
+use namespace::autoclean;
+
+#-------------------------------------------------------------------------------
+
+# VERSION
+
+#-------------------------------------------------------------------------------
+
+has host => (
+   is       => 'ro',
+   isa      => URI,
+   coerce   => 1,
+   required => 1,
+);
+
+#-------------------------------------------------------------------------------
+
+has author => (
+    is       => 'ro',
+    isa      => AuthorID,
+    coerce   => 1,
+    required => 1,
+);
+
+#-------------------------------------------------------------------------------
+
+sub add {
+  my ($self, %args) = @_;
+  my $dist = $args{dist};
+
+  my %ua_args = (
+           Content_Type => 'form-data',
+           Content      => [ author => $self->author(), dist => [$dist], ],
+  );
+
+  return $self->_post('add', %ua_args);
+
+}
+
+#-------------------------------------------------------------------------------
+
+sub remove {
+  my ($self, %args) = @_;
+  my $pkg = $args{package};
+
+  my %ua_args = (
+           Content => [ author => $self->author(), package => $pkg, ],
+  );
+
+  return $self->_post('remove', %ua_args);
+}
+
+#-------------------------------------------------------------------------------
+
+sub list {
+  my ($self, %args) = @_;
+  return $self->_post('list', ());
+}
+
+#-------------------------------------------------------------------------------
+
+sub _post {
+  my ($self, $action, %args) = @_;
+  my $ua = LWP::UserAgent->new();
+  my $url = $self->host() . "/$action";
+  my $response = $ua->post($url, %args);
+
+  return Pinto::Remote::Response->new( status  => $response->is_success(),
+                                       message => $response->content() );
+}
+
+#-------------------------------------------------------------------------------
+
+__PACKAGE__->meta->make_immutable();
+
+#-------------------------------------------------------------------------------
+
+1;
+
+__END__

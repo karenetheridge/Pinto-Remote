@@ -7,7 +7,7 @@ use Moose;
 use LWP::UserAgent;
 
 use MooseX::Types::Moose qw(Str);
-use Pinto::Remote::Types qw(URI AuthorID);
+use Pinto::Types qw(URI AuthorID);
 
 use Pinto::Remote::Response;
 
@@ -28,22 +28,14 @@ has host => (
 
 #-------------------------------------------------------------------------------
 
-has author => (
-    is       => 'ro',
-    isa      => AuthorID,
-    coerce   => 1,
-    required => 1,
-);
-
-#-------------------------------------------------------------------------------
-
 sub add {
   my ($self, %args) = @_;
-  my $dist = $args{dist};
+  my $dist   = $args{dist};
+  my $author = $args{author};
 
   my %ua_args = (
            Content_Type => 'form-data',
-           Content      => [ author => $self->author(), dist => [$dist], ],
+           Content      => [ author => $author, dist => [$dist], ],
   );
 
   return $self->_post('add', %ua_args);
@@ -54,10 +46,11 @@ sub add {
 
 sub remove {
   my ($self, %args) = @_;
-  my $pkg = $args{package};
+  my $pkg    = $args{package};
+  my $author = $args{author};
 
   my %ua_args = (
-           Content => [ author => $self->author(), package => $pkg, ],
+           Content => [ author => $author, package => $pkg, ],
   );
 
   return $self->_post('remove', %ua_args);

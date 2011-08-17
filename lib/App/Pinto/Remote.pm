@@ -16,8 +16,6 @@ use App::Cmd::Setup -app;
 sub global_opt_spec {
 
   return (
-
-      [ "author|a=s" => "Your author ID (like a PAUSE ID)" ],
       [ "host|H=s"   => "URL of your Pinto server (including port)" ],
   );
 }

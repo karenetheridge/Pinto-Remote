@@ -14,9 +14,26 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
+sub opt_spec {
+
+    return (
+        [ "author|a=s" => 'Your author ID (like a PAUSE ID' ]
+    );
+}
+
+#-------------------------------------------------------------------------------
+
+sub validate_args {
+    my ($self, $opts, $args) = @_;
+    $self->usage_error("Must specify exactly one package name") if @{ $args } != 1;
+    return 1;
+}
+
+#-------------------------------------------------------------------------------
+
 sub execute {
-    my ( $self, $opt, $args ) = @_;
-    my $result = $self->pinto_remote->remove( package => $args->[0] );
+    my ( $self, $opts, $args ) = @_;
+    my $result = $self->pinto_remote->remove( %{$opts}, package => $args->[0] );
     print $result->message();
     return not $result->status();
 }

@@ -19,19 +19,14 @@ use namespace::autoclean;
 
 #-------------------------------------------------------------------------------
 
-has host => (
-   is       => 'ro',
-   isa      => URI,
-   coerce   => 1,
-   required => 1,
-);
+with qw(Pinto::Role::Configurable);
 
 #-------------------------------------------------------------------------------
 
 sub add {
   my ($self, %args) = @_;
   my $dist   = $args{dist};
-  my $author = $args{author};
+  my $author = $args{author} || $self->config->author();
 
   my %ua_args = (
            Content_Type => 'form-data',
@@ -47,7 +42,7 @@ sub add {
 sub remove {
   my ($self, %args) = @_;
   my $pkg    = $args{package};
-  my $author = $args{author};
+  my $author = $args{author} || $self->config->author();
 
   my %ua_args = (
            Content => [ author => $author, package => $pkg, ],
@@ -68,7 +63,7 @@ sub list {
 sub _post {
   my ($self, $action, %args) = @_;
   my $ua = LWP::UserAgent->new();
-  my $url = $self->host() . "/$action";
+  my $url = $self->config->host() . "/$action";
   my $response = $ua->post($url, %args);
 
   return Pinto::Remote::Response->new( status  => $response->is_success(),

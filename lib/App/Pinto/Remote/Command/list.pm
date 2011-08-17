@@ -15,8 +15,8 @@ use base qw(App::Pinto::Remote::Command);
 
 
 sub execute {
-    my ( $self, $opt, $args ) = @_;
-    my $result = $self->pinto_remote->list();
+    my ( $self, $opts, $args ) = @_;
+    my $result = $self->pinto_remote( $opts )->list();
     print $result->message();
     return not $result->status();
 }

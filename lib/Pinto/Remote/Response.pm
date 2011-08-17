@@ -13,6 +13,7 @@ use namespace::autoclean;
 # VERSION
 
 #------------------------------------------------------------------------------
+# Moose attributes
 
 has status => (
     is       => 'ro',

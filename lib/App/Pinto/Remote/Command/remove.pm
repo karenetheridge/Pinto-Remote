@@ -17,7 +17,7 @@ use base qw(App::Pinto::Remote::Command);
 sub opt_spec {
 
     return (
-        [ "author|a=s" => 'Your author ID (like a PAUSE ID' ]
+        [ "author|a=s" => 'Your author ID (like a PAUSE ID)' ]
     );
 }
 
@@ -33,7 +33,7 @@ sub validate_args {
 
 sub execute {
     my ( $self, $opts, $args ) = @_;
-    my $result = $self->pinto_remote->remove( %{$opts}, package => $args->[0] );
+    my $result = $self->pinto_remote( $opts )->remove( package => $args->[0] );
     print $result->message();
     return not $result->status();
 }

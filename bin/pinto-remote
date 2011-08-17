@@ -21,51 +21,22 @@ __END__
 
 =head1 SYNOPSIS
 
-  pinto-admin [global options] COMMAND [command options] [ARGS]
+  pinto-remote [global options] COMMAND [command options] [ARGS]
 
-  pinto-admin help COMMAND
+  pinto-remote help COMMAND
 
-  pinto-admin help
-
-=head1 TYPICAL USAGE
-
-First, create a configuration file at F<~/.pinto/config.ini>:
-
-  ; Required. this wil be the path to your repository
-  local = /some/directory
-
-  ; Optional, defaults to http://cpan.perl.org
-  source = http://some-cpan-mirror
-
-  ; Optional, defaults to your shell user name
-  author = MYNAME
-
-Then, run some commands:
-
-  # Create an empty repository
-  $> pinto-admin create
-
-  # Add your own distribution to the repository
-  $> pinto-admin add Foo-Bar-1.2.tar.gz
-
-  # Fill your repository with all the latest distributions from a remote source
-  $> pinto-admin mirror 
-
-  # Then install stuff from your repository
-  $> cpanm --mirror-only --mirror file:///some/directory Foo
+  pinto-remote help
 
 =head1 DESCRIPTION
 
-C<pinto-admin> is a command line utility for managing a Pinto
-repository.  The repository can contain your own private distributions
-of Perl packages, and/or distributions from another repository (such
-as L<http://cpan.perl.org>).  You can also put locally patched
-versions of foreign distributions in your repository.
+L<pinto-remote> is a command line utility for managing a remote Pinto
+repository.  See L<pinto-admin> for information on creating a Pinto
+repository, and L<pinto-server> for information on providing remote
+access to the repository.
 
-You can then point L<cpanm> to your Pinto repository and build and
-install your distributions (and their dependencies).  B<NOTE:> At this
-time, only L<cpanm> will work properly with a Pinto repository.  But
-support for L<cpan> and L<cpanp> is coming real soon!
+Once a Pinto repository has been established and the server is
+running, you can use C<pinto-remote> to add distributions, remove
+packages, or inspect the contents of the repository.
 
 =head1 CONFIGURATION
 
@@ -81,14 +52,12 @@ leading and trailing whitespace is discarded.  Comments start with a
 semi-colon (;).
 
 Almost all configuration parameters can also be specified on the
-command line, either as global options or command options.  To display
-a list of global options:
+command line, either as global options or command options, so strictly
+speaking, a configuration file is not mandatory.
 
-  $> pinto-admin -help
-
-To get a list of options for a particular command:
-
-  $> pinto-admin help <command>
+L<pinto-remote> shares the same configuration file as L<pinto-admin>
+and L<pinto-server>.  So if you've configured those, then the only
+thing you may want to add is the C<[Pinto::Remote]> section.
 
 =over 4
 
@@ -104,61 +73,19 @@ If you have a team of developers and you want them all to be able
 to add/remove the same packages to the repository, then everyone
 on the team should use the same C<author> parameter.
 
-=item local = DIRECTORY
+=item host = URL
 
 The path to a directory where your repository will be kept.  This
 parameter is required for all commands.  You must be able to read and
 write to this directory.  You may use a tilde (~) as shorthand for
 your home directory.
 
-=item source = URL
-
-The URL of a repository that you would like to pull foreign
-distributions from.  This could be a public CPAN mirror, or another
-Pinto repository.  Defaults to L<http://cpan.perl.org>.  This
-parameter is only relevant to the C<mirror> command.
-
-=item nocleanup = 0|1
-
-If true, L<pinto-admin> will not automatically delete distributions
-that become out of date (either because you've added your own local
-version or you've pulled a newer one from a remote repository).  The
-default is 0.
-
-=item nocommit = 0|1
-
-If true, L<pinto-admin> will not commit changes in the repository to your
-VCS at the end of each command.  If you're not using a VCS store, then
-this parameter has no effect.  The default is 0.
-
-=item noinit = 0|1
-
-If true, L<pinto-admin> assumes tha the working copy of your
-repository is up-to-date and will not pull/update the repository from
-your VCS at the beginning of each command.  This can save a lot of
-time, but use with caution. If you're not using a VCS store, then this
-parameter has no effect.  The default is 0.
-
-=item notag = 0|1
-
-If true, L<pinto-admin> will not make a tag in your VCS after committing
-changes, even if you've configured a tag name.  If you're not using a
-VCS store, then this parameter has no effect.  The default is 0.
 
 =item quiet = 0|1
 
 If true, then only fatal error messages will be displayed.  This
 parameter silently overrides any C<verbose> setting.
 
-=item store = CLASS_NAME
-
-The name of the class that will handle storage of your Pinto
-repository.  The default is L<Pinto::Store>, which only stores your
-repository on the local file system.  Alternatives like
-L<Pinto::Store::Svn> and L<Pinto::Store::Git> allow you to store your
-repository inside a version control system (VCS).  See the
-documentation for each of those modules for additional configuration
-settings.
 
 =item verbose = 0|1|2
 
@@ -168,7 +95,7 @@ Controls how much noise is made.  Default is 0.
 
 =head1 COMMANDS
 
-The following commands are available.  Say C<pinto-admin help COMMAND>
+The following commands are available.  Say C<pinto-remote help COMMAND>
 to display a list of options available for that C<COMMAND>.
 
 =over 4
@@ -176,70 +103,46 @@ to display a list of options available for that C<COMMAND>.
 =item add Some-Distribution-1.2.tar.gz
 
 Adds the given distribution to the Pinto repository.  Any packages
-contained in that distribution will mask the foreign packages with
-the same name.  See the L<"RULES"> section for more information about
+contained in that distribution will mask the foreign packages with the
+same name.  See the L<"BEHAVIOR"> section for more information about
 how locally added distributions interact with foreign ones.
-
-=item clean
-
-Deletes any distribution in the repository that is not currently in
-the master index.  This usually happens automatically, unless you've
-set the C<nocleanup> parameter.
-
-=item create
-
-Creates a new, empty repository at the configured location.  You'll
-get a warning if a repository already exists at that location.
 
 =item list
 
-Lists the curent packages and distributions that are in the master
-index of your repository.  This is basically just the contents of the
-F<02packages.details.txt> file.
+Lists all the curent packages and distributions that are indexed in
+your remote repository.  This is basically just the contents of the
+F<02packages.details.txt.gz> file.
 
 =item remove Some::Package
 
-Removes the local distribution that contains the given package.  All
-other packages that were contained in the same distribution are also
-removed.  You can only remove a package that B<YOU> have locally
-added.  You cannot remove foreign packages that you pulled in from a
-remote source (however you can mask them by adding your own versions).
-
-=item mirror
-
-Fills your repository with the distributions that contain the latest
-version of all packages in the remote repository.  See the L<"RULES">
-section for more information about how locally added distributions
-interact with foreign ones.
-
-=item verify
-
-Reports any distributions that are listed in your index but not
-actually present.  This is usually a sign that something has gone
-wrong.
+Removes the distribution that contains the given package.  All other
+packages that were contained in the same distribution are also
+removed.  You can only remove a package that B<YOU> have added.  You
+cannot remove foreign packages that were pulled in from a remote source
+(however you can mask them by adding your own versions).
 
 =back
 
-=head1 RULES
+=head1 BEHAVIOR
 
-There are certain rules that govern how the indexes are managed.
-These rules are intended to ensure that clients installing packages from
-your repository will always get the B<right ones>.  Also, the rules
-attempt to make Pinto behave somewhat like PAUSE does.
+There are certain rules that govern how a Pinto repository behaves.
+These rules are intended to ensure that clients installing packages
+from your repository will always get the B<right ones>.  Also, the
+rules attempt to make Pinto behave somewhat like PAUSE does.
 
 =over 4
 
 =item A local package always masks a foreign package, and all other
 packages that are in the same distribution with the foreign package.
 
-This rule is important, so pay attention.  If you C<mirror> a
-distribution from a foreign repository that contains both C<Foo> and
-C<Bar> packages, and you C<add> your own local distribution that
-contains just the C<Foo> package, then both the foreign C<Foo> and
-C<Bar> packages will be removed from your index.  This ensures that
-anyone installing packages from your repository will always get B<your>
-version of C<Foo>.  But they'll never be able to get C<Bar>, because
-doing so would overwrite your C<Foo>.
+This is important, so pay attention.  If you C<add> a distribution
+that contains both C<Foo> and C<Bar> packages, and you later C<add>
+another distribution that contains just the C<Foo> package, then both
+the foreign C<Foo> and C<Bar> packages will be removed from your
+index.  This ensures that anyone installing packages from your
+repository will always get B<your> version of C<Foo>.  But they'll
+never be able to get C<Bar>, because doing so would overwrite your
+C<Foo>.
 
 =item You can never add a distribution with the same name twice.
 

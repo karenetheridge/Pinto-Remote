@@ -25,10 +25,12 @@ sub pinto_remote {
     my ($self, $command_options) = @_;
 
     require Pinto::Remote;
+    require Pinto::Remote::Config;
 
-    return $self->{pinto} ||= do {
+    return $self->{pinto_remote} ||= do {
         my %global_options = %{ $self->global_options() };
-        my $pinto  = Pinto::Remote->new(%global_options);
+        my $config = Pinto::Remote::Config->new(%global_options, %{$command_options});
+        my $pinto_remote = Pinto::Remote->new(config => $config);
     };
 }
 

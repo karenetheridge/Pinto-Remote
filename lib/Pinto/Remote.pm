@@ -23,6 +23,14 @@ with qw(Pinto::Role::Configurable);
 
 #-------------------------------------------------------------------------------
 
+=method add( dist => 'SomeDist-1.2.tar.gz' )
+
+Adds the specified distribution to the remote Pinto repository.  Returns
+a L<Pinto::Remote::Response> that contains the status and diagnostic
+messages from the server.
+
+=cut
+
 sub add {
   my ($self, %args) = @_;
   my $dist   = $args{dist};
@@ -39,6 +47,14 @@ sub add {
 
 #-------------------------------------------------------------------------------
 
+=method remove( package => 'Some::Package' )
+
+Removes the specified package from the remote Pinto repository.  Returns
+a L<Pinto::Remote::Response> that contains the status and diagnostic
+messages from the server.
+
+=cut
+
 sub remove {
   my ($self, %args) = @_;
   my $pkg    = $args{package};
@@ -52,6 +68,15 @@ sub remove {
 }
 
 #-------------------------------------------------------------------------------
+
+=method list()
+
+Returns a L<Pinto::Remote::Response> that contains a list of all the
+packages and distributions that are currently indexed in the remote
+repository.
+
+=cut
+
 
 sub list {
   my ($self, %args) = @_;

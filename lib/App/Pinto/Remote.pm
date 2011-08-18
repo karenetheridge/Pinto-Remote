@@ -20,6 +20,14 @@ sub global_opt_spec {
   );
 }
 
+#-------------------------------------------------------------------------------
+
+=method pinto_remote( $options )
+
+Returns a reference to a L<Pinto::Remote> object that has been
+constructed for this application.
+
+=cut
 
 sub pinto_remote {
     my ($self, $command_options) = @_;

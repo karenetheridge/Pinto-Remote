@@ -15,10 +15,16 @@ use App::Cmd::Setup -command;
 
 #-----------------------------------------------------------------------------
 
+=method pinto_remote( $options )
+
+Returns a reference to a L<Pinto::Remote> object that has been
+constructed for this command.
+
+=cut
 
 sub pinto_remote {
-  my ($self) = @_;
-  return $self->app()->pinto_remote();
+  my ($self, $options) = @_;
+  return $self->app()->pinto_remote($options);
 }
 
 #-----------------------------------------------------------------------------

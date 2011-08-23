@@ -21,7 +21,7 @@ has status => (
     required => 1,
 );
 
-has message => (
+has content => (
     is      => 'ro',
     isa     => Str,
 );

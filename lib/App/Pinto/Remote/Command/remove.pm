@@ -33,8 +33,8 @@ sub validate_args {
 
 sub execute {
     my ( $self, $opts, $args ) = @_;
-    my $result = $self->pinto_remote( $opts )->remove( package => $args->[0] );
-    print $result->message();
+    my $result = $self->pinto_remote->remove( %{$opts}, package => $args->[0] );
+    print $result->content(), "\n";
     return not $result->status();
 }
 

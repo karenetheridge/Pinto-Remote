@@ -33,7 +33,7 @@ sub validate_args {
 sub execute {
     my ( $self, $opts, $args ) = @_;
     my $result = $self->pinto_remote->add( %{$opts}, dist => $args->[0] );
-    print $result->content(), "\n";
+    print $result->content();
     return not $result->status();
 }
 

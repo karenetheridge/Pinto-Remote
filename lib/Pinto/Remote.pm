@@ -9,7 +9,7 @@ use LWP::UserAgent;
 use English qw(-no_match_vars);
 
 use MooseX::Types::Moose qw(Str);
-use Pinto::Types qw(URI AuthorID);
+use Pinto::Types 0.017 qw(URI AuthorID);
 
 use Pinto::Remote::Response;
 

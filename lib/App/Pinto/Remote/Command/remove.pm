@@ -1,6 +1,6 @@
 package App::Pinto::Remote::Command::remove;
 
-# ABSTRACT: remote a package from a remote Pinto repository
+# ABSTRACT: remove a package from a remote Pinto repository
 
 use strict;
 use warnings;

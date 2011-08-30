@@ -21,7 +21,7 @@ __END__
 
 =head1 SYNOPSIS
 
-  pinto-remote --host=http://pinto.my.com:3000  COMMAND [command options] [ARGS]
+  pinto-remote --server=http://pinto.my.com:3000 COMMAND [OPTIONS] [ARGS]
 
   pinto-remote help COMMAND
 
@@ -37,7 +37,6 @@ access to the repository.
 Once a Pinto repository has been established and the L<pinto-server>
 is running, you can use C<pinto-remote> to add distributions, remove
 packages, or inspect the contents of the repository.
-
 
 =head1 COMMANDS
 

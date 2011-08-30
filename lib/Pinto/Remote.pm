@@ -21,7 +21,7 @@ use namespace::autoclean;
 
 #-------------------------------------------------------------------------------
 
-has host => (
+has server => (
     is       => 'ro',
     isa      => URI,
     coerce   => 1,
@@ -128,7 +128,7 @@ sub _post {
   my ($self, $action_name, %args) = @_;
 
   my $ua       = LWP::UserAgent->new();
-  my $url      = $self->host() . "/action/$action_name";
+  my $url      = $self->server() . "/action/$action_name";
   my $response = $ua->post($url, %args);
 
   return Pinto::Remote::Response->new( status  => $response->is_success(),

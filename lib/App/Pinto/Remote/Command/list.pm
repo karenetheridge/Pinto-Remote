@@ -7,6 +7,8 @@ use warnings;
 
 use Pinto::Constants qw(:list);
 
+use List::MoreUtils qw(none);
+
 use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------

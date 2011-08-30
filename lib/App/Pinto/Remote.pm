@@ -16,7 +16,7 @@ use App::Cmd::Setup -app;
 sub global_opt_spec {
 
   return (
-      [ "host|H=s"   => "URL of your Pinto server (including port)" ],
+      [ "server|s=s"   => "URL of your Pinto server (including port)" ],
   );
 }
 
@@ -35,8 +35,11 @@ sub pinto_remote {
     return $self->{pinto_remote} ||= do {
         my %global_options = %{ $self->global_options() };
 
-        $global_options{host}
-            or $self->usage_error('Must specify a host');
+        $global_options{server}
+            or $self->usage_error('Must specify a server');
+
+        $global_options{server} = 'http://' . $global_options{server}
+            if $global_options{server} !~ m{^ http:// }mx;
 
         require Pinto::Remote;
         my $pinto_remote = Pinto::Remote->new(%global_options);

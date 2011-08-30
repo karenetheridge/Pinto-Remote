@@ -5,8 +5,7 @@ package App::Pinto::Remote::Command::list;
 use strict;
 use warnings;
 
-use Readonly;
-use List::MoreUtils qw(none);
+use Pinto::Constants qw(:list);
 
 use base qw(App::Pinto::Remote::Command);
 
@@ -15,18 +14,12 @@ use base qw(App::Pinto::Remote::Command);
 # VERSION
 
 #-------------------------------------------------------------------------------
-# TODO: refactor constants to the Common dist.
-
-Readonly my @LIST_TYPES => qw(local foreign conflicts all);
-Readonly my $LIST_TYPES_STRING => join ' | ', sort @LIST_TYPES;
-Readonly my $DEFAULT_LIST_TYPE => 'all';
-
-#-------------------------------------------------------------------------------
 
 sub opt_spec {
 
     return (
-        [ 'type=s'  => "One of: ( $LIST_TYPES_STRING )"],
+
+        [ 'type=s'  => "One of: ( $PINTO_LIST_TYPES_STRING )"],
     );
 }
 
@@ -37,8 +30,8 @@ sub validate_args {
 
     $self->usage_error('Arguments are not allowed') if @{ $args };
 
-    $opts->{type} ||= $DEFAULT_LIST_TYPE;
-    $self->usage_error('Invalid type') if none { $opts->{type} eq $_ } @LIST_TYPES;
+    $opts->{type} ||= $PINTO_DEFAULT_LIST_TYPE;
+    $self->usage_error('Invalid type') if none { $opts->{type} eq $_ } @PINTO_LIST_TYPES;
 
     return 1;
 }

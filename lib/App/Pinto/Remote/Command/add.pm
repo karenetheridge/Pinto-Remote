@@ -32,9 +32,12 @@ sub validate_args {
 
 sub execute {
     my ( $self, $opts, $args ) = @_;
-    my $result = $self->pinto_remote->add( %{$opts}, dist => $args->[0] );
+
+    $self->pinto_remote->new_action_batch( %{$opts} );
+    $self->pinto_remote->add_action('Add', %{$opts}, dist => $args->[0]);
+    my $result = $self->pinto_remote->run_actions();
     print $result->content();
-    return not $result->status();
+    return $result->is_success() ? 0 : 1;
 }
 
 #-------------------------------------------------------------------------------

@@ -5,13 +5,10 @@ package Pinto::Remote;
 use Moose;
 
 use Carp;
-use LWP::UserAgent;
-use English qw(-no_match_vars);
+use Class::Load;
 
-use MooseX::Types::Moose qw(Str);
-use Pinto::Types 0.017 qw(URI AuthorID);
-
-use Pinto::Remote::Response;
+use Pinto::Remote::Config;
+use Pinto::Remote::ActionBatch;
 
 use namespace::autoclean;
 
@@ -19,110 +16,75 @@ use namespace::autoclean;
 
 # VERSION
 
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# Moose attributes
 
-has server => (
-    is       => 'ro',
-    isa      => URI,
-    coerce   => 1,
-    required => 1,
+has config    => (
+    is        => 'ro',
+    isa       => 'Pinto::Remote::Config',
+    required  => 1,
 );
 
-has author => (
+
+has _action_batch => (
     is         => 'ro',
-    isa        => AuthorID,
-    coerce     => 1,
-    lazy_build => 1,
+    isa        => 'Pinto::Remote::ActionBatch',
+    writer     => '_set_action_batch',
+    init_arg   => undef,
 );
 
 #------------------------------------------------------------------------------
 
-sub _build_author {                                  ## no critic (FinalReturn)
+sub BUILDARGS {
+    my ($class, %args) = @_;
 
-    # Look at typical environment variables
-    for my $var ( qw(USERNAME USER LOGNAME) ) {
-        return uc $ENV{$var} if $ENV{$var};
-    }
+    $args{config} ||= Pinto::Remote::Config->new( %args );
 
-    # Try using pwent.  Probably only works on *nix
-    if (my $name = getpwuid($REAL_USER_ID)) {
-        return uc $name;
-    }
-
-    # Otherwise, we are hosed!
-    croak 'Unable to determine your user name';
-
+    return \%args;
 }
 
 #------------------------------------------------------------------------------
 
-=method add( dist => 'SomeDist-1.2.tar.gz' )
+sub new_action_batch {
+    my ($self, %args) = @_;
 
-Adds the specified distribution to the remote Pinto repository.
-Returns a L<Pinto::Remote::Response> that contains the overall status
-and output from the server.
+    my $batch = Pinto::Remote::ActionBatch->new( config => $self->config(),
+                                                 %args );
+    $self->_set_action_batch( $batch );
 
-=cut
-
-sub add {
-  my ($self, %args) = @_;
-  my $dist   = $args{dist};
-  my $author = $args{author} || $self->author();
-
-  my %ua_args = (
-           Content_Type => 'form-data',
-           Content      => [ author => $author, dist => [$dist], ],
-  );
-
-  return $self->_post('add', %ua_args);
-
+    return $self;
 }
 
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 
-=method remove( package => 'Some::Package' )
+sub add_action {
+    my ($self, $action_name, %args) = @_;
 
-Removes the specified package from the remote Pinto repository.
-Returns a L<Pinto::Remote::Response> that contains the overall status
-and output from the server.
+    my $action_class = "Pinto::Remote::Action::$action_name";
 
-=cut
+    eval { Class::Load::load_class($action_class); 1 }
+        or croak "Unable to load action class $action_class: $@";
 
-sub remove {
-  my ($self, %args) = @_;
-  my $pkg    = $args{package};
-  my $author = $args{author} || $self->author();
+    my $action = $action_class->new( config => $self->config(),
+                                     %args );
 
-  my %ua_args = (
-           Content => [ author => $author, package => $pkg, ],
-  );
+    $self->_action_batch->enqueue($action);
 
-  return $self->_post('remove', %ua_args);
+    return $self;
 }
 
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 
-=method list()
+sub run_actions {
+    my ($self) = @_;
 
-Returns a L<Pinto::Remote::Response> that contains a list of all the
-packages and distributions that are currently indexed in the remote
-repository.
+    my $action_batch = $self->_action_batch()
+      or croak 'You must create an action batch first';
 
-=cut
-
-
-sub list {
-  my ($self, %args) = @_;
-  my $type = $args{type} || 'All';
-
-  my %ua_args = (
-           Content => [ type => $type, ],
-  );
-
-  return $self->_post('list', %ua_args);
+    return $self->_action_batch->run();
 }
 
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 sub _post {
   my ($self, $action_name, %args) = @_;

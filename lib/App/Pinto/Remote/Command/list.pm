@@ -44,10 +44,14 @@ sub validate_args {
 #-------------------------------------------------------------------------------
 
 sub execute {
-    my ( $self, $opts, $args ) = @_;
-    my $result = $self->pinto_remote()->list( %{$opts} );
-    print $result->content();
-    return not $result->status();
+    my ($self, $opts, $args) = @_;
+
+    $self->pinto_remote->new_action_batch( %{$opts} );
+    my $list_class = 'List::' . ucfirst $opts->{type};
+    $self->pinto_remote->add_action($list_class, %{$opts});
+    my $result = $self->pinto_remote->run_actions();
+    return $result->is_success() ? 0 : 1;
+
 }
 
 #-------------------------------------------------------------------------------

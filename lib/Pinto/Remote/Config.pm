@@ -1,10 +1,10 @@
-package Pinto::Remote::Response;
+package Pinto::Remote::Config;
 
-# ABSTRACT: Represents the response received from a Pinto::Server
+# ABSTRACT: Internal configuration for Pinto::Remote
 
 use Moose;
 
-use MooseX::Types::Moose qw(Bool Str);
+use Pinto::Types qw(URI);
 
 use namespace::autoclean;
 
@@ -13,17 +13,12 @@ use namespace::autoclean;
 # VERSION
 
 #------------------------------------------------------------------------------
-# Moose attributes
 
-has status => (
+has repos => (
     is       => 'ro',
-    isa      => Bool,
+    isa      => URI,
+    coerce   => 1,
     required => 1,
-);
-
-has content => (
-    is      => 'ro',
-    isa     => Str,
 );
 
 #------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 package Pinto::Remote::BatchResult;
 
-# ABSTRACT: Accumulates exceptions and status from an ActionBatch
+# ABSTRACT: Accumulates exceptions and status from a batch of actions
 
 use Moose;
 

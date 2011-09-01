@@ -1,6 +1,6 @@
-package Pinto::Remote::Action::List::All;
+package Pinto::Remote::Action::List::Local;
 
-# ABSTRACT: List all the contents of a remote Pinto repository
+# ABSTRACT: List the local contents of a remote Pinto repository
 
 use Moose;
 
@@ -13,7 +13,7 @@ extends qw(Pinto::Remote::Action::List);
 #------------------------------------------------------------------------------
 
 has '+type' => (
-    default => 'All',
+    default => 'Local',
 );
 
 #------------------------------------------------------------------------------

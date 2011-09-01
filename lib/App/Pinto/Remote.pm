@@ -16,20 +16,20 @@ use App::Cmd::Setup -app;
 sub global_opt_spec {
 
   return (
-      [ "repos|r=s"   => "URL of your Pinto repository server (including port)" ],
+      [ "repos|r=s"   => "URL of your Pinto repository server" ],
   );
 }
 
 #-------------------------------------------------------------------------------
 
-=method pinto_remote()
+=method pinto()
 
 Returns a reference to a L<Pinto::Remote> object that has been
 constructed for this application.
 
 =cut
 
-sub pinto_remote {
+sub pinto {
     my ($self) = @_;
 
     return $self->{pinto_remote} ||= do {
@@ -37,9 +37,6 @@ sub pinto_remote {
 
         $global_options{repos}
             or $self->usage_error('Must specify a repository server');
-
-        $global_options{repos} = 'http://' . $global_options{repos}
-            if $global_options{repos} !~ m{^ http:// }mx;
 
         require Pinto::Remote;
         my $pinto_remote = Pinto::Remote->new(%global_options);

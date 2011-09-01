@@ -87,7 +87,8 @@ sub _run_one_action {
 
     #try   {
         my $response = $action->execute();
-        # $self->_result->made_changes() if $changes;
+        $self->_result->add_exception( $response->content() )
+          if not $response->is_success();
     #}
     #catch {
         # Collect unhandled exceptions

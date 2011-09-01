@@ -19,7 +19,7 @@ with qw(Pinto::Role::Authored);
 
 #------------------------------------------------------------------------------
 
-has dist => (
+has dist_file => (
     is       => 'ro',
     isa      => File,
     required => 1,
@@ -35,10 +35,10 @@ override execute => sub {
 
   my %ua_args = (
            Content_Type => 'form-data',
-           Content      => [ author => $author, dist => [$dist], ],
+           Content      => [ author => $author, dist_file => [$dist], ],
   );
 
-  return $self->_post('add', %ua_args);
+  return $self->post('add', %ua_args);
 };
 
 #------------------------------------------------------------------------------

@@ -86,19 +86,6 @@ sub run_actions {
 
 #------------------------------------------------------------------------------
 
-sub _post {
-  my ($self, $action_name, %args) = @_;
-
-  my $ua       = LWP::UserAgent->new();
-  my $url      = $self->server() . "/action/$action_name";
-  my $response = $ua->post($url, %args);
-
-  return Pinto::Remote::Response->new( status  => $response->is_success(),
-                                       content => $response->content() );
-}
-
-#-------------------------------------------------------------------------------
-
 __PACKAGE__->meta->make_immutable();
 
 #-------------------------------------------------------------------------------

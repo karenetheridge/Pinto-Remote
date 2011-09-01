@@ -23,6 +23,24 @@ has repos => (
 
 #------------------------------------------------------------------------------
 
+sub BUILDARGS {
+    my ($class, %args) = @_;
+
+    # Add scheme and default port, if the repository URL doesn't
+    # already have them.  Gosh, aren't we helpful :)
+
+    $args{repos} = 'http://' . $args{repos}
+        if $args{repos} !~ m{^ http:// }mx;
+
+    $args{repos} = $args{repos} . ':3000'
+        if $args{repos} !~ m{ :\d+ $}mx;
+
+    return \%args;
+
+}
+
+#------------------------------------------------------------------------------
+
 __PACKAGE__->meta->make_immutable();
 
 #------------------------------------------------------------------------------

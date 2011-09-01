@@ -15,16 +15,19 @@ use App::Cmd::Setup -command;
 
 #-----------------------------------------------------------------------------
 
-=method pinto_remote()
+sub usage_desc {
+    my ($self) = @_;
 
-Returns a reference to a L<Pinto::Remote> object that has been
-constructed for this command.
+    my ($command) = $self->command_names();
 
-=cut
+    return "%c --repos=URL $command [OPTIONS] [ARGS]"
+}
 
-sub pinto_remote {
-  my ($self) = @_;
-  return $self->app()->pinto_remote();
+#-----------------------------------------------------------------------------
+
+sub pinto {
+    my ($self) = @_;
+    return $self->app->pinto();
 }
 
 #-----------------------------------------------------------------------------

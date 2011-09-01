@@ -19,7 +19,7 @@ with qw(Pinto::Role::Authored);
 
 #------------------------------------------------------------------------------
 
-has package  => (
+has dist_name  => (
     is       => 'ro',
     isa      => Str,
     required => 1,
@@ -30,14 +30,14 @@ has package  => (
 override execute => sub {
   my ($self) = @_;
 
-  my $pkg    = $self->package();
-  my $author = $self->author();
+  my $dist_name = $self->dist_name();
+  my $author    = $self->author();
 
   my %ua_args = (
-           Content => [ author => $author, package => $pkg, ],
+           Content => [ author => $author, dist_name => $dist_name, ],
   );
 
-  return $self->_post('remove', %ua_args);
+  return $self->post('remove', %ua_args);
 };
 
 #------------------------------------------------------------------------------

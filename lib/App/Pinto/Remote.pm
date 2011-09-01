@@ -5,6 +5,7 @@ package App::Pinto::Remote;
 use strict;
 use warnings;
 
+use Class::Load qw();
 use App::Cmd::Setup -app;
 
 #-------------------------------------------------------------------------------
@@ -32,17 +33,23 @@ constructed for this application.
 sub pinto {
     my ($self) = @_;
 
-    return $self->{pinto_remote} ||= do {
+    return $self->{pinto} ||= do {
         my %global_options = %{ $self->global_options() };
 
         $global_options{repos}
             or $self->usage_error('Must specify a repository server');
 
-        require Pinto::Remote;
-        my $pinto_remote = Pinto::Remote->new(%global_options);
+        my $pinto_class = $self->pinto_class();
+        Class::Load::load_class($pinto_class);
+        my $pinto = $pinto_class->new(%global_options);
     };
 }
 
+#-------------------------------------------------------------------------------
+
+sub pinto_class {  return 'Pinto::Remote' }
+
+#-------------------------------------------------------------------------------
 
 1;
 

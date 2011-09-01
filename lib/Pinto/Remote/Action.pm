@@ -25,32 +25,20 @@ has config    => (
 
 sub execute {
     my ($self) = @_;
+
     croak 'This is an absract method';
 }
 
 #------------------------------------------------------------------------------
 
 sub post {
-  my ($self, $name, %args) = @_;
+    my ($self, $name, %args) = @_;
 
-  my $ua       = LWP::UserAgent->new();
-  #my $name     = $self->_name();
-  my $url      = $self->config->repos() . "/action/$name";
-  my $response = $ua->post($url, %args);
+    my $ua       = LWP::UserAgent->new();
+    my $url      = $self->config->repos() . "/action/$name";
+    my $response = $ua->post($url, %args);
 
-  return $response;
-
-  #return Pinto::Remote::Response->new( status  => $response->is_success(),
-  #                                     content => $response->content() );
-}
-
-#------------------------------------------------------------------------------
-
-sub _name {
-    my ($self) = @_;
-    my $class = ref $self;
-    my $name = ($class =~ m{:: (.*) $}gmx);
-    return $name;
+    return $response;
 }
 
 #------------------------------------------------------------------------------

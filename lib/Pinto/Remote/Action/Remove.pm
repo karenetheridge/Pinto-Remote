@@ -5,13 +5,15 @@ package Pinto::Remote::Action::Remove;
 use Moose;
 use MooseX::Types::Moose qw(Str);
 
-extends qw(Pinto::Remote::Action);
-
 use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
 # VERSION
+
+#------------------------------------------------------------------------------
+
+extends qw(Pinto::Remote::Action);
 
 #------------------------------------------------------------------------------
 
@@ -25,19 +27,30 @@ has dist_name  => (
     required => 1,
 );
 
+has message => (
+    is      => 'ro',
+    isa     => Str,
+);
+
+has tag => (
+    is      => 'ro',
+    isa     => Str,
+);
+
 #------------------------------------------------------------------------------
 
 override execute => sub {
-  my ($self) = @_;
+    my ($self) = @_;
 
-  my $dist_name = $self->dist_name();
-  my $author    = $self->author();
+    my %ua_args = (
+        Content => [ author    => $self->author(),
+                     dist_name => $self->dist_name(),
+                     message   => $self->message(),
+                     tag       => $self->tag(),
+                   ],
+    );
 
-  my %ua_args = (
-           Content => [ author => $author, dist_name => $dist_name, ],
-  );
-
-  return $self->post('remove', %ua_args);
+    return $self->post('remove', %ua_args);
 };
 
 #------------------------------------------------------------------------------

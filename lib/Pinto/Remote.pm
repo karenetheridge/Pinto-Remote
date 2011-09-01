@@ -79,7 +79,7 @@ sub run_actions {
     my ($self) = @_;
 
     my $action_batch = $self->_action_batch()
-      or croak 'You must create an action batch first';
+        or croak 'You must create an action batch first';
 
     return $self->_action_batch->run();
 }

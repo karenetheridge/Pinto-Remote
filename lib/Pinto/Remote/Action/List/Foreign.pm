@@ -4,11 +4,15 @@ package Pinto::Remote::Action::List::Foreign;
 
 use Moose;
 
-extends qw(Pinto::Remote::Action::List);
+use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
 # VERSION
+
+#------------------------------------------------------------------------------
+
+extends qw(Pinto::Remote::Action::List);
 
 #------------------------------------------------------------------------------
 

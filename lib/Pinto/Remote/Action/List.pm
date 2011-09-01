@@ -8,13 +8,15 @@ use Carp;
 use MooseX::Types::Moose qw(Str);
 use Pinto::Types 0.017 qw(IO);
 
-extends 'Pinto::Remote::Action';
-
 use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
 # VERSION
+
+#------------------------------------------------------------------------------
+
+extends qw(Pinto::Remote::Action);
 
 #------------------------------------------------------------------------------
 
@@ -43,7 +45,7 @@ override execute => sub {
     my $response = $self->post('list', %ua_args);
     print { $self->out() } $response->content();
 
-    return 0;
+    return $response;
 };
 
 #------------------------------------------------------------------------------

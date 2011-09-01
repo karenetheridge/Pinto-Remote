@@ -15,7 +15,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-sub command_names { qw( manual man --man ) }
+sub command_names { return qw( manual man --man ) }
 
 #-----------------------------------------------------------------------------
 
@@ -53,6 +53,8 @@ sub execute {
         or die "No manual available for $class";  ## no critic qw(Carping)
 
     pod2usage(-verbose => 2, -input => $absolute_path, -exitval => 0);
+
+    return 1;
 }
 
 #-------------------------------------------------------------------------------

@@ -17,14 +17,17 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
+sub command_names { return qw( list ls ) }
+
+#-------------------------------------------------------------------------------
+
 sub opt_spec {
     my ($self, $app) = @_;
 
     # TODO: Use the "one_of" feature of Getopt::Long::Descriptive to
     # define and validate the different types of lists.
 
-    return ( $self->SUPER::opt_spec(),
-
+    return (
         [ 'type=s'  => "One of: ( $PINTO_LIST_TYPES_STRING )"],
     );
 }

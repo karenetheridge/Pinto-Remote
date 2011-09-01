@@ -18,7 +18,7 @@ sub command_names { return qw( remove rm delete del ) }
 #-------------------------------------------------------------------------------
 
 sub opt_spec {
-   my ($self, $app) = @_;
+    my ($self, $app) = @_;
 
     return (
         [ 'author|a=s'  => 'Your (alphanumeric) author ID' ],

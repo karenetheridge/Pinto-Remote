@@ -37,8 +37,6 @@ sub opt_spec {
 sub validate_args {
     my ($self, $opts, $args) = @_;
 
-    $self->SUPER::validate_args($opts, $args);
-
     $self->usage_error('Arguments are not allowed') if @{ $args };
 
     $opts->{type} ||= $PINTO_DEFAULT_LIST_TYPE;

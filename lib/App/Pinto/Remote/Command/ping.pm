@@ -13,6 +13,10 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
+sub command_names { return qw( ping nop ) }
+
+#-------------------------------------------------------------------------------
+
 sub validate_args {
     my ($self, $opts, $args) = @_;
 
@@ -29,6 +33,7 @@ sub execute {
     $self->pinto->new_action_batch( %{$opts} );
     $self->pinto->add_action('Nop', %{$opts});
     my $result = $self->pinto->run_actions();
+    print $result->to_string();
 
     return $result->is_success() ? 0 : 1;
 }

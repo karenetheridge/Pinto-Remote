@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.021     2011-09-03 23:41:55 America/Los_Angeles
+
     Added the 'ping' command, which does a Nop on the remote
     repository.  Use this to check if your remote repository is alive.
 

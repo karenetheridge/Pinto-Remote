@@ -4,7 +4,7 @@ package Pinto::Remote::Config;
 
 use Moose;
 
-use Pinto::Types qw(URI);
+use Pinto::Types qw(Uri);
 
 use namespace::autoclean;
 
@@ -16,7 +16,7 @@ use namespace::autoclean;
 
 has repos => (
     is       => 'ro',
-    isa      => URI,
+    isa      => Uri,
     coerce   => 1,
     required => 1,
 );

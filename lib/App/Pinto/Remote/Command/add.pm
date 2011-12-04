@@ -52,7 +52,7 @@ sub validate_args {
 sub execute {
     my ( $self, $opts, $args ) = @_;
 
-    $self->pinto->new_action_batch( %{$opts} );
+    $self->pinto->new_batch( %{$opts} );
     $self->pinto->add_action('Add', %{$opts}, archive => $args->[0]);
     my $result = $self->pinto->run_actions();
     print $result->to_string();

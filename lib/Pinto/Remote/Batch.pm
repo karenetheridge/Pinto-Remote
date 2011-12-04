@@ -1,10 +1,10 @@
-package Pinto::Remote::ActionBatch;
+package Pinto::Remote::Batch;
 
 # ABSTRACT: Runs a series of remote actions
 
 use Moose;
 
-use Pinto::Remote::BatchResult;
+use Pinto::Remote::Result;
 
 #-----------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ has _actions => (
 sub run {
     my ($self) = @_;
 
-    my $result = Pinto::Remote::BatchResult->new();
+    my $result = Pinto::Remote::Result->new();
 
     while ( my $action = $self->dequeue() ) {
         my $response = $action->execute();

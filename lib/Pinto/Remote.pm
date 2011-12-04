@@ -8,7 +8,7 @@ use Carp;
 use Class::Load;
 
 use Pinto::Remote::Config;
-use Pinto::Remote::ActionBatch;
+use Pinto::Remote::Batch;
 
 use namespace::autoclean;
 
@@ -26,10 +26,10 @@ has config    => (
 );
 
 
-has _action_batch => (
+has _batch => (
     is         => 'ro',
-    isa        => 'Pinto::Remote::ActionBatch',
-    writer     => '_set_action_batch',
+    isa        => 'Pinto::Remote::Batch',
+    writer     => '_set_batch',
     init_arg   => undef,
 );
 
@@ -45,12 +45,12 @@ sub BUILDARGS {
 
 #------------------------------------------------------------------------------
 
-sub new_action_batch {
+sub new_batch {
     my ($self, %args) = @_;
 
-    my $batch = Pinto::Remote::ActionBatch->new( config => $self->config(),
-                                                 %args );
-    $self->_set_action_batch( $batch );
+    my $batch = Pinto::Remote::Batch->new( config => $self->config(),
+                                           %args );
+    $self->_set_batch( $batch );
 
     return $self;
 }
@@ -68,7 +68,7 @@ sub add_action {
     my $action = $action_class->new( config => $self->config(),
                                      %args );
 
-    $self->_action_batch->enqueue($action);
+    $self->_batch->enqueue($action);
 
     return $self;
 }
@@ -78,10 +78,9 @@ sub add_action {
 sub run_actions {
     my ($self) = @_;
 
-    my $action_batch = $self->_action_batch()
-        or croak 'You must create an action batch first';
+    $self->_batch() or croak 'You must create a batch first';
 
-    return $self->_action_batch->run();
+    return $self->_batch->run();
 }
 
 #------------------------------------------------------------------------------

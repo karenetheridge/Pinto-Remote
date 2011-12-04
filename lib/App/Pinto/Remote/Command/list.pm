@@ -24,11 +24,8 @@ sub command_names { return qw( list ls ) }
 sub opt_spec {
     my ($self, $app) = @_;
 
-    # TODO: Use the "one_of" feature of Getopt::Long::Descriptive to
-    # define and validate the different types of lists.
-
     return (
-        [ 'type=s'  => "One of: ( $PINTO_LIST_TYPES_STRING )"],
+        [ 'format=s'  => 'Format specification (see documentation)'],
     );
 }
 
@@ -39,8 +36,9 @@ sub validate_args {
 
     $self->usage_error('Arguments are not allowed') if @{ $args };
 
-    $opts->{type} ||= $PINTO_DEFAULT_LIST_TYPE;
-    $self->usage_error('Invalid type') if none { $opts->{type} eq $_ } @PINTO_LIST_TYPES;
+    ## no critic qw(StringyEval)
+    ## Double-interpolate, to expand \n, \t, etc.
+    $opts->{format} = eval qq{"$opts->{format}"} if $opts->{format};
 
     return 1;
 }
@@ -51,8 +49,7 @@ sub execute {
     my ($self, $opts, $args) = @_;
 
     $self->pinto->new_action_batch( %{$opts} );
-    my $list_class = 'List::' . ucfirst $opts->{type};
-    $self->pinto->add_action($list_class, %{$opts});
+    $self->pinto->add_action('List', %{$opts});
     my $result = $self->pinto->run_actions();
 
     return $result->is_success() ? 0 : 1;
@@ -69,9 +66,9 @@ __END__
 
 =head1 DESCRIPTION
 
-This command lists the distributions and packages that are indexed in
-your repository.  You can see all of them, only foreign ones, only
-local ones, or only the local ones that conflict with a foreign one.
+This command lists the distributions and packages that are in your
+repository.  You also can customize the format and content of the
+output.
 
 Note this command never changes the state of your repository.
 
@@ -83,35 +80,42 @@ None.
 
 =over 4
 
-=item --type=(all | local | foreign | conflicts)
+=item format
 
-Specifies what type of packages and distributions to list. In all
-cases, only packages and distributions that are indexed will appear.
-If you have outdated distributions in your repository, they will never
-appear be listed.  Valid types are:
+Sets the format of the output using C<printf>-style placeholders.
+Valid placeholders are:
 
-=over 8
+  Placeholder    Meaning                     Example
+  --------------------------------------------------------------
+  %n             Package name                Foo::Bar
+  %N             Package vname               Foo::Bar-1.2
+  %v             Package version             1.2
+  %x             Index status                (* = in the index )
+  %m             Distribution maturity       (D = developer, R = release)
+  %p             Distribution index path     /A/AU/AUTHOR/Foo-Bar-1.2.tar.gz [1]
+  %P             Distribution archive path   authors\id\A\AU\AUTHOR\Foo-1.2.tar.gz [2]
+  %s             Distribution origin         (L = local, F = foreign)
+  %S             Distribution source         http://cpan.perl.org
+  %a             Distribution author         AUTHOR
+  %d             Distribution name           Foo-Bar
+  %D             Distribution vname          Foo-Bar-1.2
+  %w             Distribution version        1.2
+  %u             Distribution url            http://cpan.perl.org/authors/id/A/AU/AUTHOR/Foo-Bar-1.2.tar.gz
 
-=item all
 
-Lists all the packages and distributions.  This is the default type.
+  [1]: The index path is always a Unix-style path.
+  [2]: The archive path is always in the native style for this OS.
 
-=item local
+You can also specify the minimum field widths and left or right
+justification, using the usual notation.  For example, this is what
+the default format looks like.
 
-Lists only the local packages and distributions that were added with
-the C<add> command.
-
-=item foreign
-
-Lists only the foreign packages and distributions that were pulled in
-with the C<update> command.
-
-=item conflicts
-
-Lists only the local distributions that conflict with a foreign
-distribution.  In other words, the local and foreign distribution
-contain a package with the same name.
+  %x%m%s %-38n %v %p\n
 
 =back
 
-=back
+=head1 TODO
+
+In the future, we may permit the use of regular expressions or some
+other syntax for narrowing the list to certain distributions and
+packages.  You suggestions are welcome.

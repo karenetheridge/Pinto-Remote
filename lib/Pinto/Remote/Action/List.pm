@@ -3,10 +3,11 @@ package Pinto::Remote::Action::List;
 # ABSTRACT: List the contents of a remote repository
 
 use Moose;
+use MooseX::Types::Moose qw(Str);
 
 use Carp;
-use MooseX::Types::Moose qw(Str);
-use Pinto::Types 0.017 qw(IO);
+
+use Pinto::Types qw(IO);
 
 use namespace::autoclean;
 
@@ -28,12 +29,9 @@ has out => (
 );
 
 
-has type => (
+has format => (
     is       => 'ro',
     isa      => Str,
-    init_arg => undef,
-    default  => sub { croak 'Abstract attribute' },
-    lazy     => 1,
 );
 
 #------------------------------------------------------------------------------
@@ -41,7 +39,8 @@ has type => (
 override execute => sub {
     my ($self) = @_;
 
-    my %ua_args = ( Content => [ type => $self->type() ] );
+    my @format = $self->format() ? ( format => $self->format() ) : ();
+    my %ua_args = ( Content => \@format );
     my $response = $self->post('list', %ua_args);
     print { $self->out() } $response->content();
 

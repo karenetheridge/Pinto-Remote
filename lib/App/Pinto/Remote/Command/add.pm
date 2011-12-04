@@ -21,7 +21,7 @@ sub opt_spec {
     my ($self, $app) = @_;
 
     return (
-        [ 'author|a=s'  => 'Your (alphanumeric) author ID' ],
+        [ 'author=s'    => 'Your (alphanumeric) author ID' ],
         [ 'message|m=s' => 'Prepend a message to the VCS log' ],
         [ 'tag=s'       => 'Specify a VCS tag name' ],
     );
@@ -34,7 +34,7 @@ sub usage_desc {
 
     my ($command) = $self->command_names();
 
-    return "%c --repos=URL $command [OPTIONS] DISTRIBUTION_FILE";
+    return "%c --repos=URL $command [OPTIONS] ARCHIVE_FILE";
 }
 
 #-------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ sub usage_desc {
 sub validate_args {
     my ($self, $opts, $args) = @_;
 
-    $self->usage_error("Must specify exactly one distribution file") if @{ $args } != 1;
+    $self->usage_error("Must specify exactly one archive file") if @{ $args } != 1;
 
     return 1;
 }
@@ -53,7 +53,7 @@ sub execute {
     my ( $self, $opts, $args ) = @_;
 
     $self->pinto->new_action_batch( %{$opts} );
-    $self->pinto->add_action('Add', %{$opts}, dist_file => $args->[0]);
+    $self->pinto->add_action('Add', %{$opts}, archive => $args->[0]);
     my $result = $self->pinto->run_actions();
     print $result->to_string();
 
@@ -67,22 +67,21 @@ __END__
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL add [OPTIONS] DISTRIBUTION_FILE
+  pinto-remote --repos=URL add [OPTIONS] ARCHIVE_FILE
 
 =head1 DESCRIPTION
 
-This command adds a local distribution to the repository.  Packages in
-local distributions always mask packages in foreign distributions.
-When a distribution is first added to the repository, the author
-becomes the owner of the distribution Thereafter, only the same author
-can add a new version of that distribution. [Technically speaking, the
-author really owns the *packages* in the distribution, not the
-distribution itself.]
+This command adds a local distribution archive to the repository.
+When a local distribution is first added to the repository, the author
+becomes the owner of the distribution.  Thereafter, only the same
+author can add a new version of that distribution. [Technically
+speaking, the author really owns the *packages* within the
+distribution, not the distribution itself.]
 
 =head1 COMMAND ARGUMENTS
 
-The argument to this command is the path to the distribution files that you
-wish to add.  This files must exist and must be readable.
+The argument to this command is the path to the distribution archive
+file that you wish to add.  This file must exist and must be readable.
 
 =head1 COMMAND OPTIONS
 
@@ -97,7 +96,7 @@ uppercase.  The default is your username.
 =item --message=MESSAGE
 
 Prepends the C<MESSAGE> to the VCS log message that L<Pinto>
-generates.  This is only relevant if you are using a VCS-based storage
+generates.  This is only relevant if you are using a VCS-basedd storage
 mechanism for L<Pinto>.
 
 =item --tag=NAME

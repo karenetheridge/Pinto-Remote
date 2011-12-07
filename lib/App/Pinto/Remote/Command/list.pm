@@ -110,7 +110,7 @@ the default format looks like.
 
 =back
 
-=head1 TODO
+=head1 TO DO
 
 In the future, we may permit the use of regular expressions or some
 other syntax for narrowing the list to certain distributions and

@@ -96,7 +96,7 @@ uppercase.  The default is your username.
 =item --message=MESSAGE
 
 Prepends the C<MESSAGE> to the VCS log message that L<Pinto>
-generates.  This is only relevant if you are using a VCS-basedd storage
+generates.  This is only relevant if you are using a VCS-based storage
 mechanism for L<Pinto>.
 
 =item --tag=NAME

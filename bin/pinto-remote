@@ -57,15 +57,15 @@ C<pinto-remote> supports several commands that perform various
 operations on your remote repository, or report information about your
 remote repository.  To get a listing of all the available commands:
 
-  pinto-remote commands
+  $> pinto-remote commands
 
 Each command has its own options and arguments.  To get a brief summary:
 
-  pinto-remote help <command>
+  $> pinto-remote help <command>
 
 To see the complete manual for a command:
 
-  pinto-remote manual <command>
+  $> pinto-remote manual <command>
 
 =head1 SEE ALSO
 

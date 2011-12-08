@@ -36,7 +36,7 @@ sub pinto {
     return $self->{pinto} ||= do {
         my %global_options = %{ $self->global_options() };
 
-        $global_options{repos}  ||= $ENV{PINTO_REPOSITORY}
+        $global_options{repos} ||= $ENV{PINTO_REPOSITORY}
             || $self->usage_error('Must specify a repository server');
 
         my $pinto_class = $self->pinto_class();

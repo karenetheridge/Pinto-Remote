@@ -2,7 +2,7 @@
 
     Added the 'statistics', 'pin' and 'unpin' commands.  These
     are identical to the ones in pinto-admin.  You need to 
-    run Pinto::Server 0.027 or newer to use these commands.
+    run Pinto::Server 0.028 or newer to use these commands.
 
     The 'list' command now supports the -p and -d options to limit the
     listing to packages or distributions that match a PATTERN.

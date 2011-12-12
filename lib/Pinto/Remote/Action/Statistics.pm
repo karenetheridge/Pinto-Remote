@@ -1,6 +1,6 @@
-package Pinto::Remote::Action::List;
+package Pinto::Remote::Action::Statistics;
 
-# ABSTRACT: List the contents of a remote repository
+# ABSTRACT: Report statistics about a remote repository
 
 use Moose;
 use MooseX::Types::Moose qw(Str);
@@ -35,20 +35,6 @@ has format => (
     default  => '',
 );
 
-
-has packages => (
-    is       => 'ro',
-    isa      => Str,
-    default  => '',
-);
-
-
-has distributions => (
-    is       => 'ro',
-    isa      => Str,
-    default  => '',
-);
-
 #------------------------------------------------------------------------------
 
 override execute => sub {
@@ -63,12 +49,10 @@ override execute => sub {
         Content => [
 
             format        => $self->format(),
-            packages      => $self->packages(),
-            distributions => $self->distributions(),
-       ],
+        ],
    );
 
-    my $response = $self->post('list', %ua_args);
+    my $response = $self->post('statistics', %ua_args);
     print { $self->out() } $response->content();
 
     return $response;

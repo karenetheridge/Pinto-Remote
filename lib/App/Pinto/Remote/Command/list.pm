@@ -1,6 +1,6 @@
 package App::Pinto::Remote::Command::list;
 
-# ABSTRACT: list the contents of a remote Pinto repository
+# ABSTRACT: list the contents of the remote repository
 
 use strict;
 use warnings;
@@ -21,7 +21,9 @@ sub opt_spec {
     my ($self, $app) = @_;
 
     return (
-        [ 'format=s'  => 'Format specification (see documentation)'],
+        [ 'distributions|d=s'  => 'Limit to matching distribution paths'],
+        [ 'format=s'           => 'Format specification (see documentation)'],
+        [ 'packages|p=s'       => 'Limit to matching package names'],
     );
 }
 
@@ -76,6 +78,15 @@ None.
 
 =over 4
 
+=item -d=PATTERN
+
+=item --distributions=PATTERN
+
+Limits the listing to records where the distributions path matches
+"PATTERN".  Note that "PATTERN" is just a plain string, not a regular
+expression.  The "PATTERN" will match if it appears anywhere in the
+distribution path.
+
 =item format
 
 Sets the format of the output using C<printf>-style placeholders.
@@ -113,10 +124,14 @@ the default format looks like.
 
   %x%m%s %-38n %v %p\n
 
+=item −p=PATTERN
+
+=item −−packages=PATTERN
+
+Limits the listing to records where the package name matches
+"PATTERN".  Note that "PATTERN" is just a plain string, not a regular
+expression.  The "PATTERN" will match if it appears anywhere in the
+package name.
+
 =back
 
-=head1 TO DO
-
-In the future, we may permit the use of regular expressions or some
-other syntax for narrowing the list to certain distributions and
-packages.  You suggestions are welcome.

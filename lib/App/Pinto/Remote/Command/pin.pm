@@ -47,8 +47,12 @@ sub validate_args {
 sub execute {
     my ( $self, $opts, $args ) = @_;
 
+    my ($name, $version) = split m/ - /mx, $args->[0], 2;
+
     $self->pinto->new_batch( %{$opts} );
-    $self->pinto->add_action('Pin', %{$opts}, package => $args->[0]);
+
+    $self->pinto->add_action('Pin', %{$opts}, package => $name,
+                                              version => $version || 0);
     my $result = $self->pinto->run_actions();
     print $result->to_string();
 

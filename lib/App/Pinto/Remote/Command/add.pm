@@ -1,6 +1,6 @@
 package App::Pinto::Remote::Command::add;
 
-# ABSTRACT: add a distribution to a remote Pinto repository
+# ABSTRACT: add a distribution to the remote repository
 
 use strict;
 use warnings;

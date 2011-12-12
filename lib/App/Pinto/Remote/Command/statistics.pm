@@ -1,6 +1,6 @@
 package App::Pinto::Remote::Command::statistics;
 
-# ABSTRACT: report statistics about a remote Pinto repository
+# ABSTRACT: report statistics about the remote repository
 
 use strict;
 use warnings;

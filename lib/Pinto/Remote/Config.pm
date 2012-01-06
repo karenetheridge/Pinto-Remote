@@ -14,7 +14,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-has repos => (
+has root => (
     is       => 'ro',
     isa      => Uri,
     coerce   => 1,
@@ -26,14 +26,14 @@ has repos => (
 sub BUILDARGS {
     my ($class, %args) = @_;
 
-    # Add scheme and default port, if the repository URL doesn't
+    # Add scheme and default port, if the repository root URL doesn't
     # already have them.  Gosh, aren't we helpful :)
 
-    $args{repos} = 'http://' . $args{repos}
-        if $args{repos} !~ m{^ http:// }mx;
+    $args{root} = 'http://' . $args{root}
+        if $args{root} !~ m{^ https?:// }mx;
 
-    $args{repos} = $args{repos} . ':3000'
-        if $args{repos} !~ m{ :\d+ $}mx;
+    $args{root} = $args{root} . ':3000'
+        if $args{root} !~ m{ :\d+ $}mx;
 
     return \%args;
 

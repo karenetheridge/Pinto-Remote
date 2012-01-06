@@ -20,7 +20,7 @@ sub usage_desc {
 
     my ($command) = $self->command_names();
 
-    return "%c --repos=URL $command [OPTIONS] [ARGS]"
+    return "%c --root=URL $command [OPTIONS] [ARGS]"
 }
 
 #-----------------------------------------------------------------------------

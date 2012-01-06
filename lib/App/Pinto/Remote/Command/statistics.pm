@@ -58,7 +58,7 @@ __END__
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL statistics [OPTIONS]
+  pinto-remote --root=URL statistics [OPTIONS]
 
 =head1 DESCRIPTION
 

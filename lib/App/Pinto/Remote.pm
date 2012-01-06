@@ -17,7 +17,7 @@ use App::Cmd::Setup -app;
 sub global_opt_spec {
 
   return (
-      [ "repos|r=s"   => "URL of your Pinto repository server" ],
+      [ 'root|r=s'   => 'Root URL of your Pinto repository' ],
   );
 }
 
@@ -36,8 +36,8 @@ sub pinto {
     return $self->{pinto} ||= do {
         my %global_options = %{ $self->global_options() };
 
-        $global_options{repos} ||= $ENV{PINTO_REPOSITORY}
-            || $self->usage_error('Must specify a repository server');
+        $global_options{root} ||= $ENV{PINTO_REPOSITORY_ROOT}
+            || $self->usage_error('Must specify a repository root URL');
 
         my $pinto_class = $self->pinto_class();
         Class::Load::load_class($pinto_class);

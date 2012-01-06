@@ -35,7 +35,7 @@ sub post {
     my ($self, $name, %args) = @_;
 
     my $ua       = LWP::UserAgent->new();
-    my $url      = $self->config->repos() . "/action/$name";
+    my $url      = $self->config->root() . "/action/$name";
     my $response = $ua->post($url, %args);
 
     return $response;

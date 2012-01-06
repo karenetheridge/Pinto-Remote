@@ -34,7 +34,7 @@ sub usage_desc {
 
     my ($command) = $self->command_names();
 
-    return "%c --repos=URL $command [OPTIONS] ARCHIVE_FILE";
+    return "%c --root=URL $command [OPTIONS] ARCHIVE_FILE";
 }
 
 #-------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ __END__
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL add [OPTIONS] ARCHIVE_FILE
+  pinto-remote --root=URL add [OPTIONS] ARCHIVE_FILE
 
 =head1 DESCRIPTION
 

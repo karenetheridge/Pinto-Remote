@@ -29,7 +29,7 @@ sub usage_desc {
 
     my ($command) = $self->command_names();
 
-    return "%c --repos=URL $command [OPTIONS] PACKAGE";
+    return "%c --root=URL $command [OPTIONS] PACKAGE";
 }
 
 #-------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ __END__
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL pin [OPTIONS] PACKAGE
+  pinto-remote --root=URL pin [OPTIONS] PACKAGE
 
 =head1 DESCRIPTION
 

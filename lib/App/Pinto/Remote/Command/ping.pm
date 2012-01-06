@@ -45,7 +45,7 @@ __END__
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL ping
+  pinto-remote --root=URL ping
 
 =head1 DESCRIPTION
 

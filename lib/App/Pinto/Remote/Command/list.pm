@@ -60,7 +60,7 @@ __END__
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL list [OPTIONS]
+  pinto-remote --root=URL list [OPTIONS]
 
 =head1 DESCRIPTION
 

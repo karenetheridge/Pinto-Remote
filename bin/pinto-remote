@@ -21,7 +21,7 @@ __END__
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL COMMAND [OPTIONS] [ARGS]
+  pinto-remote --root=URL COMMAND [OPTIONS] [ARGS]
 
   pinto-remote help COMMAND
 
@@ -44,9 +44,9 @@ The following options are available for all commands.
 
 =over 4
 
-=item --repos=URL
+=item --root=URL
 
-Specifies the URL of your remote repository (i.e. this is where
+Specifies the root URL of your remote repository (i.e. this is where
 L<pinto-server> is listening.  You may omit the C<http://> part if you
 like.  And if you do not specify a port in your URL, then it defaults
 to default port used by L<pinto-server> (which is currently 3000).

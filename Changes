@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+    The --repos option on pinto-remote has been officially
+    renamed to --root.  This was done to be symmetrical
+    with the Pinto API.  The old --repos option will *not*
+    be supported for backward compatibility.
+
 0.028     2011-12-12 00:18:43 America/Los_Angeles
 
     Added the 'statistics', 'pin' and 'unpin' commands.  These

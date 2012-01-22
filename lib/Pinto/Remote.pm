@@ -22,9 +22,9 @@ use namespace::autoclean;
 has config    => (
     is        => 'ro',
     isa       => 'Pinto::Remote::Config',
+    handles   => [ qw(root) ],
     required  => 1,
 );
-
 
 has _batch => (
     is         => 'ro',

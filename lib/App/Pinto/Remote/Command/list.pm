@@ -124,9 +124,9 @@ the default format looks like.
 
   %x%m%s %-38n %v %p\n
 
-=item −p=PATTERN
+=item -p=PATTERN
 
-=item −−packages=PATTERN
+=item --packages=PATTERN
 
 Limits the listing to records where the package name matches
 "PATTERN".  Note that "PATTERN" is just a plain string, not a regular

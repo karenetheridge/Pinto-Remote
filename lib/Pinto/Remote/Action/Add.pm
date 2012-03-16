@@ -4,7 +4,7 @@ package Pinto::Remote::Action::Add;
 
 use Moose;
 
-use MooseX::Types::Moose qw(Str);
+use MooseX::Types::Moose qw(Str Bool);
 use Pinto::Types qw(File);
 
 use namespace::autoclean;
@@ -30,6 +30,11 @@ has archive  => (
     required => 1,
 );
 
+has norecurse => (
+   is      => 'ro',
+   isa     => Bool,
+   default => 0,
+);
 
 has message => (
     is      => 'ro',
@@ -55,6 +60,7 @@ override execute => sub {
 
             author    => $self->author(),
             archive   => [ $self->archive->stringify() ],
+            norecurse => $self->norecurse,
             message   => $self->message(),
             tag       => $self->tag(),
         ],

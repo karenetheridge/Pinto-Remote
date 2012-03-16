@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+    pinto-remote add now supports --norecurse, just like pinto-admin (Karen
+    Etheridge).
+
 0.030     2012-01-26 22:27:48 America/Los_Angeles
 
     The --repos option on pinto-remote has been officially

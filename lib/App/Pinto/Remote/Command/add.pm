@@ -24,6 +24,7 @@ sub opt_spec {
         [ 'author=s'    => 'Your (alphanumeric) author ID' ],
         [ 'message|m=s' => 'Prepend a message to the VCS log' ],
         [ 'tag=s'       => 'Specify a VCS tag name' ],
+        [ 'norecurse'   => 'Do not recursively import prereqs' ],
     );
 }
 

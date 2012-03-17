@@ -4,7 +4,7 @@ Pinto::Remote - Interact with a remote Pinto repository
 
 # VERSION
 
-version 0.033
+version 0.034
 
 # SUPPORT
 

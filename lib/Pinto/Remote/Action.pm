@@ -34,7 +34,7 @@ sub execute {
 sub post {
     my ($self, $name, %args) = @_;
 
-    my $ua       = LWP::UserAgent->new();
+    my $ua       = LWP::UserAgent->new(timeout => 600);
     my $url      = $self->config->root() . "/action/$name";
     my $response = $ua->post($url, %args);
 

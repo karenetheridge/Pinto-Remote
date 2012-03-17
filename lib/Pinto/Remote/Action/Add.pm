@@ -30,11 +30,13 @@ has archive  => (
     required => 1,
 );
 
+
 has norecurse => (
    is      => 'ro',
    isa     => Bool,
    default => 0,
 );
+
 
 has message => (
     is      => 'ro',
@@ -60,7 +62,7 @@ override execute => sub {
 
             author    => $self->author(),
             archive   => [ $self->archive->stringify() ],
-            norecurse => $self->norecurse,
+            norecurse => $self->norecurse(),
             message   => $self->message(),
             tag       => $self->tag(),
         ],

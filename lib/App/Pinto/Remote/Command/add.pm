@@ -97,7 +97,7 @@ uppercase.  The default is your username.
 
 =item --norecurse
 
-Prevents L<Pinto> from recursively importing distribtuions required to
+Prevents L<Pinto> from recursively importing distributions required to
 satisfy the prerequisites of the added distribution.  Imported
 distributions are pulled from whatever remote repositories are
 configured as the C<source> for the remove repository.

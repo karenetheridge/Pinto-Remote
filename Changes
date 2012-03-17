@@ -1,7 +1,8 @@
 {{$NEXT}}
 
     pinto-remote add now supports --norecurse, just like pinto-admin
-    (Karen Etheridge).
+    (Karen Etheridge).  To use this, you'll need version 0.033 or
+    better of both Pinto and Pinto::Server.
 
 0.030     2012-01-26 22:27:48 America/Los_Angeles
 

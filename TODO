@@ -1,0 +1,9 @@
+Support some kind of verbose mode, so you can see more of what
+happened, not just errors.
+
+Read the HTTP response as a stream and display it progressively, so
+users can see the response as it happens, rather than having to wait
+until it is all done.  This will require pinto-server to send the
+response progressively too.
+
+Find way to share more code between Pinto::Admin and Pinto::Remote.

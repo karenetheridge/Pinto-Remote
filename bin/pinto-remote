@@ -1,4 +1,4 @@
-#!/bin/env perl
+#!/usr/bin/env perl
 
 # ABSTRACT: Interact with a remote a Pinto repository
 # PODNAME: pinto-remote

@@ -23,8 +23,9 @@ sub opt_spec {
     return (
         [ 'author=s'    => 'Your (alphanumeric) author ID' ],
         [ 'message|m=s' => 'Prepend a message to the VCS log' ],
-        [ 'tag=s'       => 'Specify a VCS tag name' ],
         [ 'norecurse'   => 'Do not recursively import prereqs' ],
+        [ 'tag=s'       => 'Specify a VCS tag name' ],
+
     );
 }
 
@@ -93,6 +94,13 @@ file that you wish to add.  This file must exist and must be readable.
 Sets your identity as a distribution author.  The C<NAME> can only be
 alphanumeric characters only (no spaces) and will be forced to
 uppercase.  The default is your username.
+
+=item --norecurse
+
+Prevents L<Pinto> from recursively importing distribtuions required to
+satisfy the prerequisites of the added distribution.  Imported
+distributions are pulled from whatever remote repositories are
+configured as the C<source> for the remove repository.
 
 =item --message=MESSAGE
 

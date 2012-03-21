@@ -6,6 +6,7 @@ use Moose;
 
 use Carp;
 use LWP::UserAgent;
+use URI;
 
 use namespace::autoclean;
 
@@ -35,7 +36,9 @@ sub post {
     my ($self, $name, %args) = @_;
 
     my $ua       = LWP::UserAgent->new(timeout => 600);
-    my $url      = $self->config->root() . "/action/$name";
+    my $url      = URI->new($self->config->root());
+    $url->path_segments('', 'action', $name);
+
     my $response = $ua->post($url, %args);
 
     return $response;

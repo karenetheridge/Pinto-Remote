@@ -6,6 +6,7 @@ use Moose;
 
 use Carp;
 use LWP::UserAgent;
+use HTTP::Request;
 use URI;
 
 use namespace::autoclean;
@@ -39,7 +40,10 @@ sub post {
     my $url      = URI->new($self->config->root());
     $url->path_segments('', 'action', $name);
 
-    my $response = $ua->post($url, %args);
+    my $request = HTTP::Request->new(POST => $url);
+    $request->authorization_basic($self->config->username, $self->config->password)
+        if $self->config->password;
+    my $response = $ua->request($request);
 
     return $response;
 }

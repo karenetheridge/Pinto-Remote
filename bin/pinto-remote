@@ -64,6 +64,7 @@ the --password is specified, defaults to the current user login.
 Specifies the password to use for server authentication. Optional; if not
 provided, no authentication is attempted.
 
+=back
 
 =head1 COMMANDS
 

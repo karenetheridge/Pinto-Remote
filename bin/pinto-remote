@@ -47,22 +47,23 @@ The following options are available for all commands.
 =item --root=URL
 
 Specifies the root URL of your remote repository (i.e. this is where
-L<pinto-server> is listening.  You may omit the C<http://> part if you
-like.  And if you do not specify a port in your URL, then it defaults
-to default port used by L<pinto-server> (which is currently 3000).
-Alternatively, you can set the C<PINTO_REPOSITORY_ROOT> environment
-variable to the root URL of your remote repository.  If no root is
-specified, it defaults to C<http://localhost:3000>
+L<pinto-server> is listening).  You may omit the C<http://> part if
+you like.  And if you do not specify a port in your URL, then it
+defaults to default port used by L<pinto-server> (which is currently
+3000).  Alternatively, you can set the C<PINTO_REPOSITORY_ROOT>
+environment variable to the root URL of your remote repository.  If no
+root is specified, it defaults to C<http://localhost:3000>
 
 =item --username=USER
 
-Specifies the username to use for server authentication.  If not provided, and
-the --password is specified, defaults to the current user login.
+Specifies the username to use for server authentication.  If not
+provided, and the --password is specified, defaults to the current
+user login.
 
 =item --password=PASS
 
-Specifies the password to use for server authentication. Optional; if not
-provided, no authentication is attempted.
+Specifies the password to use for server authentication. Optional; if
+not provided, no authentication is attempted.
 
 =back
 

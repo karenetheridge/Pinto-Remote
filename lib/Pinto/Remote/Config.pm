@@ -4,6 +4,7 @@ package Pinto::Remote::Config;
 
 use Moose;
 
+use URI;
 use Pinto::Types qw(Uri);
 
 use namespace::autoclean;
@@ -18,7 +19,7 @@ has root => (
     is       => 'ro',
     isa      => Uri,
     coerce   => 1,
-    required => 1,
+    default  => sub { URI->new('http://localhost:3000') },
 );
 
 #------------------------------------------------------------------------------
@@ -30,10 +31,10 @@ sub BUILDARGS {
     # already have them.  Gosh, aren't we helpful :)
 
     $args{root} = 'http://' . $args{root}
-        if $args{root} !~ m{^ https?:// }mx;
+        if defined $args{root} && $args{root} !~ m{^ https?:// }mx;
 
     $args{root} = $args{root} . ':3000'
-        if $args{root} !~ m{ :\d+ $}mx;
+        if defined $args{root} && $args{root} !~ m{ :\d+ $}mx;
 
     return \%args;
 

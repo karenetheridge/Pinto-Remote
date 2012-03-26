@@ -36,13 +36,17 @@ sub execute {
 sub post {
     my ($self, $name, %args) = @_;
 
-    my $ua       = LWP::UserAgent->new(timeout => 600);
-    my $url      = URI->new($self->config->root());
+    my $ua  = LWP::UserAgent->new(timeout => 600);
+    my $url = URI->new( $self->config->root() );
     $url->path_segments('', 'action', $name);
 
     my $request = HTTP::Request->new(POST => $url);
-    $request->authorization_basic($self->config->username, $self->config->password)
-        if $self->config->password;
+
+    if ( $self->config->password() ) {
+        $request->authorization_basic( $self->config->username(),
+                                       $self->config->password() );
+    }
+
     my $response = $ua->request($request);
 
     return $response;

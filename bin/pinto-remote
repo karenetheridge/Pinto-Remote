@@ -54,6 +54,17 @@ Alternatively, you can set the C<PINTO_REPOSITORY_ROOT> environment
 variable to the root URL of your remote repository.  If no root is
 specified, it defaults to C<http://localhost:3000>
 
+=item --username=USER
+
+Specifies the username to use for server authentication.  If not provided, and
+the --password is specified, defaults to the current user login.
+
+=item --password=PASS
+
+Specifies the password to use for server authentication. Optional; if not
+provided, no authentication is attempted.
+
+
 =head1 COMMANDS
 
 C<pinto-remote> supports several commands that perform various

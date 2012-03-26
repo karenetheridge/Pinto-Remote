@@ -6,6 +6,8 @@ use Moose;
 
 use Carp;
 use LWP::UserAgent;
+use HTTP::Request;
+use URI;
 
 use namespace::autoclean;
 
@@ -26,7 +28,7 @@ has config    => (
 sub execute {
     my ($self) = @_;
 
-    croak 'This is an absract method';
+    croak 'This is an abstract method';
 }
 
 #------------------------------------------------------------------------------
@@ -35,8 +37,13 @@ sub post {
     my ($self, $name, %args) = @_;
 
     my $ua       = LWP::UserAgent->new(timeout => 600);
-    my $url      = $self->config->root() . "/action/$name";
-    my $response = $ua->post($url, %args);
+    my $url      = URI->new($self->config->root());
+    $url->path_segments('', 'action', $name);
+
+    my $request = HTTP::Request->new(POST => $url);
+    $request->authorization_basic($self->config->username, $self->config->password)
+        if $self->config->password;
+    my $response = $ua->request($request);
 
     return $response;
 }

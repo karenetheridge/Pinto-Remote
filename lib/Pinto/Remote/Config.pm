@@ -22,6 +22,18 @@ has root => (
     default  => sub { URI->new('http://localhost:3000') },
 );
 
+has username => (
+    is      => 'ro',
+    isa     => 'Str',
+    lazy    => 1,
+    default => sub { $ENV{USER} },
+);
+
+has password => (
+    is      => 'ro',
+    isa     => 'Str',
+);
+
 #------------------------------------------------------------------------------
 
 sub BUILDARGS {

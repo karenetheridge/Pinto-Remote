@@ -36,21 +36,24 @@ has password => (
 
 #------------------------------------------------------------------------------
 
-sub BUILDARGS {
-    my ($class, %args) = @_;
+around BUILDARGS => sub {
+    my $orig = shift;
+    my $class = shift;
+
+    my $args = $class->$orig(@_);
 
     # Add scheme and default port, if the repository root URL doesn't
     # already have them.  Gosh, aren't we helpful :)
 
-    $args{root} = 'http://' . $args{root}
-        if defined $args{root} && $args{root} !~ m{^ https?:// }mx;
+    $args->{root} = 'http://' . $args->{root}
+        if defined $args->{root} && $args->{root} !~ m{^ https?:// }mx;
 
-    $args{root} = $args{root} . ':3000'
-        if defined $args{root} && $args{root} !~ m{ :\d+ $}mx;
+    $args->{root} = $args->{root} . ':3000'
+        if defined $args->{root} && $args->{root} !~ m{ :\d+ $}mx;
 
     return \%args;
+};
 
-}
 
 #------------------------------------------------------------------------------
 

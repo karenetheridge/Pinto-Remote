@@ -5,6 +5,11 @@ package Pinto::Remote::Config;
 use Moose;
 
 use URI;
+use Term::ReadLine;
+use Term::UI;
+use Term::ReadKey;
+use Encode;
+
 use Pinto::Types qw(Uri);
 
 use namespace::autoclean;
@@ -30,8 +35,9 @@ has username => (
 );
 
 has password => (
-    is      => 'ro',
+    is      => 'rw',
     isa     => 'Str',
+    predicate => '_has_password',
 );
 
 #------------------------------------------------------------------------------
@@ -51,8 +57,29 @@ around BUILDARGS => sub {
     $args->{root} = $args->{root} . ':3000'
         if defined $args->{root} && $args->{root} !~ m{ :\d+ $}mx;
 
-    return \%args;
+    return $args;
 };
+
+sub BUILD
+{
+    my $self = shift;
+
+    # prompt user for password
+    if ($self->_has_password and not $self->password)
+    {
+        Term::ReadKey::ReadMode('noecho');
+        my $term_ui = Term::ReadLine->new('password');
+        my $input_bytes = $term_ui->get_reply(
+            prompt => 'Password: ',
+            allow  => sub { defined $_[0] and length $_[0] },
+        );
+        chomp(my $password = Encode::decode_utf8($input_bytes));
+        Term::ReadKey::ReadMode('normal');
+        print "\n";     # \n from user was swallowed in noecho mode
+
+        $self->password($password);
+    }
+}
 
 
 #------------------------------------------------------------------------------

@@ -57,13 +57,14 @@ root is specified, it defaults to C<http://localhost:3000>
 =item --username=USER
 
 Specifies the username to use for server authentication.  If not
-provided, and the --password is specified, defaults to the current
+provided, and a --password is used, defaults to the current
 user login.
 
-=item --password=PASS
+=item --password=PASS, --password=
 
 Specifies the password to use for server authentication. Optional; if
-not provided, no authentication is attempted.
+not provided, no authentication is attempted. If the value is omitted, you will
+be prompted for the password.
 
 =back
 

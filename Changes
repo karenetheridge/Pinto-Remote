@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+    pinto-remote now supports --username and --password options, for passing
+    authentication credentials to pinto-server. To properly authenticate with
+    the server, you'll need version <insert version here> of Pinto::Server.
+
 0.034     2012-03-17 08:51:16 America/Los_Angeles
 
     Bug Fixes:

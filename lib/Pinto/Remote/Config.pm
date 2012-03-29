@@ -31,7 +31,7 @@ has username => (
     is      => 'ro',
     isa     => 'Str',
     lazy    => 1,
-    default => sub { $ENV{USER} },
+    default => sub { getpwuid($<) },
 );
 
 has password => (

@@ -64,7 +64,7 @@ sub BUILD
     my $self = shift;
 
     # prompt user for password
-    if ($self->password eq '-')
+    if ($self->password and $self->password eq '-')
     {
         Term::ReadKey::ReadMode('noecho');
         my $term_ui = Term::ReadLine->new('password');

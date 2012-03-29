@@ -19,7 +19,7 @@ sub global_opt_spec {
   return (
       [ 'root|r=s'              => 'Root URL of your Pinto repository' ],
       [ 'username|user|u=s'     => 'Username to use for server authentication (optional)' ],
-      [ 'password|passwd|p:s'   => 'Password to use for server authentication (optional)' ],
+      [ 'password|passwd|p=s'   => 'Password to use for server authentication (optional)' ],
   );
 }
 

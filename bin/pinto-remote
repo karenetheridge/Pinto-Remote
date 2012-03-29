@@ -60,10 +60,10 @@ Specifies the username to use for server authentication.  If not
 provided, and a --password is used, defaults to the current
 user login.
 
-=item --password=PASS, --password=
+=item --password=PASS, --password=-
 
 Specifies the password to use for server authentication. Optional; if
-not provided, no authentication is attempted. If the value is omitted, you will
+not provided, no authentication is attempted. If the value is -, you will
 be prompted for the password.
 
 =back

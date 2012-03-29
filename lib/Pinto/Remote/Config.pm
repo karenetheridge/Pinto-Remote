@@ -37,7 +37,6 @@ has username => (
 has password => (
     is      => 'rw',
     isa     => 'Str',
-    predicate => '_has_password',
 );
 
 #------------------------------------------------------------------------------
@@ -65,7 +64,7 @@ sub BUILD
     my $self = shift;
 
     # prompt user for password
-    if ($self->_has_password and not $self->password)
+    if ($self->password eq '-')
     {
         Term::ReadKey::ReadMode('noecho');
         my $term_ui = Term::ReadLine->new('password');
